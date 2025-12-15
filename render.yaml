@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: cipher-encryption-app
+    runtime: docker
+    plan: free
+    healthCheckPath: /login
+    healthCheckInterval: 300
+    
+    # Build configuration
+    dockerfile: ./Dockerfile
+    dockerContext: ./
+    
+    # Environment variables (set in Render dashboard)
+    envVars:
+      - key: RESEND_API_KEY
+        scope: run
+      - key: RESEND_FROM_EMAIL
+        scope: run
+      - key: APP_BASE_URL
+        scope: run
+      - key: PORT
+        value: "10000"
+      - key: SPRING_PROFILES_ACTIVE
+        value: "prod"
+
+    # Auto-deploy on push
+    autoDeploy: true

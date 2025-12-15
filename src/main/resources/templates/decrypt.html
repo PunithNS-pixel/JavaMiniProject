@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decrypt Message - Cipher Encryption</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-brand">🔐 Cipher</a>
+            <div class="navbar-menu">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Decrypt a Message</h1>
+                <p class="card-subtitle">Decrypt an encrypted message using the correct decryption key</p>
+            </div>
+
+            <form action="/decrypt" method="post">
+                <input type="hidden" name="token" th:value="${token}"/>
+
+                <div class="form-group">
+                    <label for="encryptedText">Encrypted Message</label>
+                    <textarea id="encryptedText" name="encryptedText" th:text="${encryptedText}" placeholder="Paste the encrypted text here..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="cipherType">Decryption Method</label>
+                    <select id="cipherType" name="cipherType" onchange="toggleFields()">
+                        <option value="VIGENERE" th:selected="${cipherType == 'VIGENERE'}">Vigenère Cipher (requires keyword)</option>
+                        <option value="CAESAR" th:selected="${cipherType == 'CAESAR'}">Caesar Cipher (uses shift value)</option>
+                        <option value="ATBASH" th:selected="${cipherType == 'ATBASH'}">Atbash Cipher (no key needed)</option>
+                        <option value="PLAYFAIR" th:selected="${cipherType == 'PLAYFAIR'}">Playfair Cipher (requires keyword)</option>
+                    </select>
+                </div>
+
+                <div id="phraseGroup" class="form-group">
+                    <label for="phrase">Decryption Keyword</label>
+                    <input type="text" id="phrase" name="phrase" th:value="${phrase}" placeholder="Enter the keyword used for encryption" required>
+                </div>
+
+                <div id="shiftGroup" class="form-group hidden">
+                    <label for="shift">Shift Amount</label>
+                    <input type="number" id="shift" name="shift" th:value="${shift}" min="1" max="25">
+                </div>
+
+                <button type="submit">Decrypt Message</button>
+            </form>
+
+            <div th:if="${decryptedText}">
+                <div style="margin-top: 2rem;">
+                    <h2 style="font-size: 1.25rem; margin-bottom: 1rem;">Decrypted Message</h2>
+                    <div class="preview-box" th:text="${decryptedText}"></div>
+                </div>
+            </div>
+
+            <div class="links">
+                <a href="/encrypt">Encrypt a Message</a>
+                <a href="/">Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFields() {
+            const type = document.getElementById('cipherType').value;
+            const phraseGroup = document.getElementById('phraseGroup');
+            const shiftGroup = document.getElementById('shiftGroup');
+            
+            if (type === 'VIGENERE' || type === 'PLAYFAIR') {
+                phraseGroup.classList.remove('hidden');
+                shiftGroup.classList.add('hidden');
+                document.getElementById('phrase').required = true;
+            } else if (type === 'CAESAR') {
+                phraseGroup.classList.add('hidden');
+                shiftGroup.classList.remove('hidden');
+                document.getElementById('phrase').required = false;
+            } else {
+                phraseGroup.classList.add('hidden');
+                shiftGroup.classList.add('hidden');
+                document.getElementById('phrase').required = false;
+            }
+        }
+        toggleFields();
+    </script>
+</body>
+</html>

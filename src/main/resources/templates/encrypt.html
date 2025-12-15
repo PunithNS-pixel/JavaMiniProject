@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt Message - Cipher Encryption</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-brand">🔐 Cipher</a>
+            <div class="navbar-menu">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Encrypt a Message</h1>
+                <p class="card-subtitle">Choose a cipher and encrypt your message securely</p>
+            </div>
+
+            <form action="/encrypt" method="post">
+                <div class="form-group">
+                    <label for="text">Message to Encrypt</label>
+                    <textarea id="text" name="text" placeholder="Type your secret message here..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="cipherType">Encryption Method</label>
+                    <select id="cipherType" name="cipherType" onchange="toggleFields()">
+                        <option value="VIGENERE">Vigenère Cipher (requires keyword)</option>
+                        <option value="CAESAR">Caesar Cipher (uses shift value)</option>
+                        <option value="ATBASH">Atbash Cipher (simple letter reversal)</option>
+                        <option value="PLAYFAIR">Playfair Cipher (requires keyword)</option>
+                    </select>
+                </div>
+
+                <div id="phraseGroup" class="form-group">
+                    <label for="phrase">Encryption Keyword</label>
+                    <input type="text" id="phrase" name="phrase" placeholder="e.g., mysecretkey" required>
+                    <small style="display: block; margin-top: 0.25rem; color: var(--gray-600);">Used to decrypt the message</small>
+                </div>
+
+                <div id="shiftGroup" class="form-group hidden">
+                    <label for="shift">Shift Amount</label>
+                    <input type="number" id="shift" name="shift" value="3" min="1" max="25">
+                </div>
+
+                <div class="form-group">
+                    <label for="pdfPassword">PDF Password (Optional)</label>
+                    <input type="text" id="pdfPassword" name="pdfPassword" placeholder="Leave empty for auto-generated password">
+                    <small style="display: block; margin-top: 0.25rem; color: var(--gray-600);">Password to open the PDF file</small>
+                </div>
+
+                <button type="submit">Encrypt Message</button>
+            </form>
+
+            <div class="links">
+                <a href="/">Home</a>
+                <a href="/decrypt">Decrypt a Message</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleFields() {
+            const type = document.getElementById('cipherType').value;
+            const phraseGroup = document.getElementById('phraseGroup');
+            const shiftGroup = document.getElementById('shiftGroup');
+            
+            if (type === 'VIGENERE' || type === 'PLAYFAIR') {
+                phraseGroup.classList.remove('hidden');
+                shiftGroup.classList.add('hidden');
+                document.getElementById('phrase').required = true;
+            } else if (type === 'CAESAR') {
+                phraseGroup.classList.add('hidden');
+                shiftGroup.classList.remove('hidden');
+                document.getElementById('phrase').required = false;
+            } else {
+                phraseGroup.classList.add('hidden');
+                shiftGroup.classList.add('hidden');
+                document.getElementById('phrase').required = false;
+            }
+        }
+        toggleFields();
+    </script>
+</body>
+</html>

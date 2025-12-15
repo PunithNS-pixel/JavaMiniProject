@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Sent - Cipher Encryption</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-brand">🔐 Cipher</a>
+            <div class="navbar-menu">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Email Status</h1>
+                <p class="card-subtitle">Your encrypted message has been processed</p>
+            </div>
+
+            <div th:if="${emailStatus == 'Sent'}" class="alert alert-success">
+                <strong>✓ Email sent successfully!</strong>
+            </div>
+
+            <div th:if="${emailStatus != 'Sent' and error}" class="alert alert-error">
+                <strong>✗ Failed to send email</strong>
+                <p th:text="${error}" style="margin-top: 0.5rem;"></p>
+            </div>
+
+            <div class="form-group" th:if="${toEmail}">
+                <label>Recipient Email</label>
+                <div class="preview-box" th:text="${toEmail}"></div>
+            </div>
+
+            <div class="form-group" th:if="${qrUrl}">
+                <label>Decryption Link</label>
+                <div class="preview-box" th:text="${qrUrl}"></div>
+                <p style="margin-top: 0.75rem; color: var(--gray-600); font-size: 0.9rem;">
+                    This link allows recipients to decrypt your message without entering the encrypted text manually.
+                </p>
+            </div>
+
+            <div class="form-group" th:if="${emailStatus == 'Sent'}">
+                <label>Next Steps</label>
+                <p style="margin: 0.5rem 0 0 0; color: var(--gray-600);">
+                    The recipient will receive an email with the encrypted message as a PDF attachment. They can download it, unlock it with the provided password, and use the QR code or link to decrypt the message.
+                </p>
+            </div>
+
+            <div class="links">
+                <a href="/encrypt">Encrypt Another Message</a>
+                <a href="/decrypt">Decrypt a Message</a>
+                <a href="/">Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

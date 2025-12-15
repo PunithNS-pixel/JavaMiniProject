@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Result - Cipher Encryption</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="/" class="navbar-brand">🔐 Cipher</a>
+            <div class="navbar-menu">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Message Encrypted</h1>
+                <p class="card-subtitle">Your message has been successfully encrypted</p>
+            </div>
+
+            <div class="form-group">
+                <label>Encryption Method</label>
+                <div class="preview-box" th:text="${cipherType}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Original Message</label>
+                <div class="preview-box" th:text="${originalText}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Encrypted Message</label>
+                <div class="preview-box" th:text="${encryptedText}"></div>
+            </div>
+
+            <h2 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem;">Send to Recipient</h2>
+
+            <form action="/send" method="post">
+                <input type="hidden" name="cipherType" th:value="${cipherType}"/>
+                <input type="hidden" name="encryptedText" th:value="${encryptedText}"/>
+                <input type="hidden" name="phrase" th:value="${phrase}"/>
+                <input type="hidden" name="shift" th:value="${shift}"/>
+                <input type="hidden" name="pdfPassword" th:value="${pdfPassword}"/>
+
+                <div class="form-group">
+                    <label for="toEmail">Recipient's Email Address</label>
+                    <input type="email" id="toEmail" name="toEmail" placeholder="recipient@example.com" required>
+                </div>
+
+                <button type="submit">Generate PDF & Send Email</button>
+            </form>
+
+            <div class="links">
+                <a href="/encrypt">Encrypt Another Message</a>
+                <a href="/decrypt">Decrypt a Message</a>
+                <a href="/">Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
