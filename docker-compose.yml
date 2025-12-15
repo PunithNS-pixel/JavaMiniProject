@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  cryptoapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cryptoapp:local
+    environment:
+      # App will bind to this port inside the container
+      - PORT=10000
+      # Used for QR links; adjust to your host URL if remote
+      - APP_BASE_URL=http://localhost:8080
+      # Optional for email feature
+      # - RESEND_API_KEY=your_resend_api_key
+      # - RESEND_FROM_EMAIL="Your App <no-reply@yourdomain.com>"
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "8080:10000"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:10000/login"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped

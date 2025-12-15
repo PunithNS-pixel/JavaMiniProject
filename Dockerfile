@@ -17,5 +17,5 @@ ENV JAVA_OPTS="-Xmx512m -Xms256m"
 
 EXPOSE 10000
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Run the application (respect JAVA_OPTS)
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
