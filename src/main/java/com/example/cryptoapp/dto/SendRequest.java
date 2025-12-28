@@ -7,6 +7,7 @@ public class SendRequest {
     private String phrase; // vigenere or playfair
     private Integer shift; // caesar
     private String pdfPassword; // sender-provided password
+    private String pdfPasswordHint; // hint for unlocking PDF
 
     public String getToEmail() { return toEmail; }
     public void setToEmail(String toEmail) { this.toEmail = toEmail; }
@@ -20,4 +21,6 @@ public class SendRequest {
     public void setShift(Integer shift) { this.shift = shift; }
     public String getPdfPassword() { return pdfPassword; }
     public void setPdfPassword(String pdfPassword) { this.pdfPassword = pdfPassword; }
+    public String getPdfPasswordHint() { return pdfPasswordHint; }
+    public void setPdfPasswordHint(String pdfPasswordHint) { this.pdfPasswordHint = pdfPasswordHint; }
 }

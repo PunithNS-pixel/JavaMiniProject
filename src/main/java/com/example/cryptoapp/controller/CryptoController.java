@@ -82,14 +82,15 @@ public class CryptoController {
 
             byte[] pdf = pdfService.buildInstructionPdf(cipherType, req.getEncryptedText(), phrase, shift, qrUrl, pdfPassword);
 
-            String body = "You've received an encrypted message.\n\n" +
-                    "PDF password: " + pdfPassword + "\n" +
-                    (phrase != null ? "Phrase: " + phrase + "\n" : "") +
-                    (shift != null ? "Shift: " + shift + "\n" : "") +
-                    "Open the attached PDF for instructions or visit: " + qrUrl + "\n";
+            // Include the PDF password hint in the email body
+            String passwordHint = req.getPdfPasswordHint();
+            String body = "Please see the attached PDF.\n\n";
+            if (passwordHint != null && !passwordHint.isBlank()) {
+                body += "Hint to unlock PDF: " + passwordHint;
+            }
 
             boolean ok = emailService.sendEmailWithAttachment(req.getToEmail(),
-                    "Encrypted message instructions",
+                    "Document",
                     body,
                     pdf,
                     "instructions.pdf",

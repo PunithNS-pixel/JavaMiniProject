@@ -52,6 +52,14 @@
                     <input type="email" id="toEmail" name="toEmail" placeholder="recipient@example.com" required>
                 </div>
 
+                <div class="form-group">
+                    <label for="pdfPasswordHint">PDF Password Hint (will be sent in email)</label>
+                    <input type="text" id="pdfPasswordHint" name="pdfPasswordHint" placeholder="Enter a hint for the PDF password" required>
+                    <p style="margin-top: 0.5rem; color: var(--gray-600); font-size: 0.9rem;">
+                        This hint will help the recipient unlock the PDF attachment.
+                    </p>
+                </div>
+
                 <button type="submit">Generate PDF & Send Email</button>
             </form>
 
